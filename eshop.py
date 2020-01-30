@@ -26,9 +26,9 @@ price_ranges = ('Free to start', '$0 - $4.99', '$5 - $9.99',
 
 def main():
     for c in categories:
-        filename = "./{0}.json".format(c)
-        file = open(filename,"w")
-        file.write("Hello World")
+        json_file_name = "./{0}.json".format(c)
+        json_file = open(json_file_name,"w")
+        data_to_json = []
         for p in price_ranges:
             end_pagination = False
             page = 0
@@ -48,8 +48,11 @@ def main():
                     .format(c, p, str(page), 
                     str(len(json_decoded['results'][0]['hits']))))
                     
+                    data_to_json.append(json_decoded['results'][0]['hits'])
+
                     page = page + 1
-        file.close()
+        json_file.write(json.dumps(data_to_json))
+        json_file.close()
 
 def get_post_payload(category, price, page):
     return "{\"requests\":[{\"indexName\":\"noa_aem_game_en_us\"" \
